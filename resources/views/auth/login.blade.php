@@ -20,7 +20,7 @@
             <div class="col-12 col-lg-6 d-flex align-items-center">
                 <div class="auth-form-wrapper w-100">
                     <div class="auth-brand">
-                        <i class="fa-solid fa-school auth-brand-icon"></i>
+                        <a href="{{ route('welcome') }}" class="fa-solid fa-school auth-brand-icon"></a>
                         Learning Hub
                     </div>
 
