@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherPostController extends Controller
 {
@@ -13,6 +15,9 @@ class TeacherPostController extends Controller
     public function index()
     {
         //
+        $posts = Auth::user()->posts()->orderBy('created_at', 'desc')->paginate(2);
+
+        return view('teacher.post.my_post', ['posts' => $posts]);
     }
 
     /**
@@ -21,6 +26,7 @@ class TeacherPostController extends Controller
     public function create()
     {
         //
+        return view('teacher.post.create');
     }
 
     /**
@@ -29,6 +35,14 @@ class TeacherPostController extends Controller
     public function store(Request $request)
     {
         //
+        $validation = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        Auth::user()->posts()->create($validation);
+
+        return redirect()->route('teacher.post.index')->with('success', 'Post created successfully!');
     }
 
     /**
@@ -45,6 +59,9 @@ class TeacherPostController extends Controller
     public function edit(string $id)
     {
         //
+        $post = Auth::user()->posts()->findOrFail($id);
+
+        return view('teacher.post.edit', ['post' => $post]);
     }
 
     /**
@@ -53,6 +70,16 @@ class TeacherPostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $post = Auth::user()->posts()->findOrFail($id);
+
+        $validation = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        $post->update($validation);
+
+        return redirect()->route('teacher.post.index', $post->id)->with('success', 'Post updated successfully!');
     }
 
     /**

@@ -4,7 +4,8 @@
     <div class="container py-4">
         <h2 class="mb-4">Teacher Dashboard</h2>
 
-        <div class="row g-4">
+        <!-- Cards Section -->
+        <div class="row g-4 mb-5">
             <!-- My Posts Card -->
             <div class="col-md-4">
                 <div class="card shadow-sm border-0 h-100">
@@ -39,7 +40,7 @@
                             <p class="text-muted mb-4">Share assignments, announcements, or resources with your students.
                             </p>
                         </div>
-                        <a href="" class="btn btn-success w-100">Create New Post</a>
+                        <a href="{{ route('teacher.post.create') }}" class="btn btn-success w-100">Create New Post</a>
                     </div>
                 </div>
             </div>
@@ -72,5 +73,43 @@
                 </div>
             </div>
         </div>
+
+        <!-- Posts Section -->
+        <h1 class="display-6 mb-4">Latest Posts</h1>
+        <div class="row g-4">
+            @foreach ($posts as $post)
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <!-- Post Header -->
+                            <div class="d-flex align-items-center mb-3">
+                                <div
+                                    class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center me-3">
+                                    {{ strtoupper(substr($post->user->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">{{ $post->user->name }}</h5>
+                                    <small class="text-muted">Teacher</small>
+                                </div>
+                                <div class="ms-auto pb-4">
+                                    <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
+                                </div>
+                            </div>
+
+                            <!-- Post Content -->
+                            <h3 class="post-title mb-3">{{ $post->title }}</h3>
+                            <p class="post-excerpt text-muted mb-4">{{ Str::limit($post->content, 150) }}</p>
+                            <a href="{{ route('post.show', $post->id) }}" class="btn btn-outline-primary w-100">Read
+                                More</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+    </div>
+    {{-- pagination --}}
+    <div class="d-flex justify-content-center">
+        {{ $posts->links() }}
     </div>
 @endsection

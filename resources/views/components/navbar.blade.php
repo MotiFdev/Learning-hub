@@ -13,10 +13,10 @@
                 </li>
                 @can('is-teacher')
                     <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ route('dashboard') }}">Dashboard</a>
+                        <a class="nav-link active fw-semibold" href="{{ route('teacher.dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active fw-semibold" href="{{ route('profile') }}">Posts</a>
+                        <a class="nav-link active fw-semibold" href="{{ route('teacher.post.index') }}">Posts</a>
                     </li>
                 @endcan
                 <li class="nav-item">

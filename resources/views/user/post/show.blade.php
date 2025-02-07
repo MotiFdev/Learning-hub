@@ -71,7 +71,13 @@
                             </div>
                             <div class="w-100">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h6 class="mb-0">{{ $comment->user->name }}</h6>
+                                    <div>
+                                        <h6 class="mb-0">{{ $comment->user->name }}</h6>
+                                        <p class="text-muted mb-0">
+                                            {{ $comment->user->id === Auth::id() ? 'You' : ($comment->user->id === $comment->post->user_id ? 'Creator' : $comment->user->role) }}
+
+                                        </p>
+                                    </div>
                                     <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
                                 </div>
                                 <p class="mb-0 text-muted">{{ $comment->content }}</p>

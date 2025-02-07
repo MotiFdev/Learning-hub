@@ -21,43 +21,64 @@
                         Learning Hub
                     </div>
 
-                    <form class="auth-form">
+                    <form class="auth-form" method="POST" action="{{ route('register') }}">
+                        @csrf
+                        @method('POST')
+
                         <h2 class="mb-4 fw-bold">Create Your Account</h2>
 
                         <div class="row g-4">
                             <!-- Name Input -->
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="John Doe">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        name="name" id="name" value="{{ old('name') }}"
+                                        placeholder="John Doe">
                                     <label for="name">Full Name</label>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <!-- Email Input -->
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email"
-                                        placeholder="name@example.com">
+                                    <input type="email" name="email"
+                                        class="form-control @error('email') is-invalid @enderror" id="email"
+                                        value="{{ old('email') }}" placeholder="name@example.com">
                                     <label for="email">Email address</label>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <!-- Password Inputs -->
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <input type="password" name="password"
+                                        class="form-control @error('password') is-invalid @enderror" id="password"
+                                        placeholder="Password">
                                     <label for="password">Password</label>
-                                </div>
-                                <div class="password-requirements">
-                                    Must be at least 8 characters
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="password-requirements">
+                                        Must be at least 8 characters
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="password" class="form-control" id="confirm-password"
-                                        placeholder="Confirm Password">
+                                    <input type="password" name="password_confirmation"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        id="confirm-password" placeholder="Confirm Password">
                                     <label for="confirm-password">Confirm Password</label>
+                                    @error('password_confirmation')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
