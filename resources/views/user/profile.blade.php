@@ -18,20 +18,19 @@
             <div class="profile-card">
                 <div class="card-body p-4">
                     <!-- Avatar -->
-                    <div class="profile-avatar">
-                        <i class="fa-solid fa-user profile-avatar-icon"></i>
-                    </div>
 
                     <!-- Account Info Form -->
                     <form class="mb-5" method="POST" action="{{ route('profile.update') }}">
                         @csrf
                         @method('PUT')
-                        <h4 class="mb-4 fw-bold">Personal Information</h4>
+                        <div class="profile-avatar">
+                            <h4 class="mb-4 fw-bold">Personal Information</h4>
+                        </div>
 
                         <!-- Display Name -->
                         <div class="form-floating mb-4">
                             <input type="text" name="name" class="form-control" id="displayName"
-                                value={{ Auth::user()->name }} placeholder="Display Name">
+                                value="{{ Auth::user()->name }}" placeholder="Display Name">
                             <label for="displayName">Display Name</label>
                             @error('name')
                                 <p class="text-danger">{{ $message }}</p>

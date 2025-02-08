@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\PostManagementController;
+use App\Http\Controllers\admin\UserManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\PostController;
@@ -30,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 // Authenticated User Routes
-Route::middleware(['role:user,teacher', 'verified'])->group(function () {
+Route::middleware(['role:user,teacher,admin', 'verified'])->group(function () {
     Route::get('/home', [PostController::class, 'index'])->name('home');
     Route::get('/posts/{id}', [UserPostController::class, 'show'])->name('post.show');
     Route::post('/posts/{id}', [UserCommentController::class, 'store'])->name('comment.store');
@@ -51,6 +53,7 @@ Route::middleware(['role:teacher'])->group(function () {
         Route::post('/teacher/posts/create', 'store')->name('teacher.post.store');
         Route::get('/teacher/posts/{id}/edit', 'edit')->name('teacher.post.edit');
         Route::put('/teacher/posts/{id}', 'update')->name('teacher.post.update');
+        Route::delete('/teacher/posts/{id}/delete', 'destroy')->name('teacher.post.destroy');
     });
 });
 
@@ -69,14 +72,32 @@ Route::controller(EmailVerificationController::class)->group(function () {
 
 
 //Admin Route
-Route::controller(DashboardController::class)->group(function () {
+Route::controller(DashboardController::class)->middleware(['role:admin'])->group(function () {
     Route::get('/admin/dashboard', 'showTotals')->name('admin.dashboard');
 });
 
 
-// tester route for view template design
-Route::view('/admin/create/post', 'admin.posts.create')->name('admin.post.create');
-Route::view('/admin/posts', 'admin.posts.index')->name('admin.post.index');
+// tester route for view template design'
 
-Route::view('/admin/users', 'admin.users.index')->name('admin.user.index');
-Route::view('/admin/users/create', 'admin.users.create')->name('admin.user.create');
+Route::middleware(['role:admin'])->controller(UserManagementController::class)->group(function () {
+    Route::get('/admin/users', 'showAllUsers')->name('admin.show.users');
+    Route::get('/admin/teachers', 'showAllTeachers')->name('admin.show.teachers');
+    Route::get('/admin/admins', 'showAllAdmins')->name('admin.show.admins');
+    Route::get('/admin/users/create', 'create')->name('admin.user.create');
+    Route::post('/admin/users/create', 'store')->name('admin.user.store');
+
+    Route::get('/admin/users/{id}/edit', 'edit')->name('admin.user.edit');
+    Route::put('/admin/users/{id}/edit', 'update')->name('admin.user.update');
+    Route::delete('/admin/users/{id}/delete', 'destroy')->name('admin.user.destroy');
+});
+// Route::view('/admin/users/create', 'admin.users.create')->name('admin.user.create');
+
+
+Route::get('/admin/posts', [PostManagementController::class, 'index'])->name('admin.post.index');
+
+Route::get('/admin/create/post', [PostManagementController::class, 'create'])->name('admin.post.create');
+Route::post('/admin/create/post', [PostManagementController::class, 'store'])->name('admin.post.store');
+Route::get('/admin/posts/{id}/edit', [PostManagementController::class, 'edit'])->name('admin.post.edit');
+Route::put('/admin/posts/{id}/edit', [PostManagementController::class, 'update'])->name('admin.post.update');
+Route::delete('/admin/posts/{id}/delete', [PostManagementController::class, 'destroy'])->name('admin.post.destroy');
+// Route::view('/admin/create/post', 'admin.posts.create')->name('admin.post.create');

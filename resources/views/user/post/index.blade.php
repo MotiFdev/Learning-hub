@@ -10,7 +10,7 @@
                     </div>
                     <div class="ms-3">
                         <h5 class="mb-0">{{ $post->user->name }}</h5>
-                        <small class="text-muted">Teacher</small>
+                        <small class="text-muted">{{ $post->user->role === 'admin' ? 'Admin' : 'Teacher' }}</small>
                     </div>
                 </div>
                 <div class="card-body">

@@ -28,6 +28,13 @@ class UserController extends Controller
             'name' => $request->name,
         ]);
 
+        Auth::user()->activities()->create([
+            'activity_type' => 'Profile Updated',
+            'details' => 'User ' . Auth::user()->name . ' updated their profile to ' . $request->name,
+            'icon_type' => 'fas fa-user-edit',
+            'color_type' => 'warning',
+        ]);
+
         return redirect()->route('profile')->with('success', 'Profile updated successfully!');
     }
 
@@ -45,9 +52,18 @@ class UserController extends Controller
             ]);
         }
 
+
+
         // Update password with correct request field
         User::whereId(Auth::user()->id)->update([
             'password' => Hash::make($request->password),
+        ]);
+
+        Auth::user()->activities()->create([
+            'activity_type' => 'Password Updated',
+            'details' => 'User ' . Auth::user()->name . ' updated their password',
+            'icon_type' => 'fas fa-key',
+            'color_type' => 'warning',
         ]);
 
         // Logout the user to refresh session

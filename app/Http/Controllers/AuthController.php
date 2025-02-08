@@ -64,8 +64,16 @@ class AuthController extends Controller
         // Dispatch the email verification event
         event(new Registered($user));
 
+
         // Log in the user immediately
         Auth::login($user);
+
+        Auth::user()->activities()->create([
+            'activity_type' => 'New User Registered',
+            'details' => 'User ' . Auth::user()->name . ' registered with email ' . $validation['email'],
+            'icon_type' => 'fas fa-user-plus',
+            'color_type' => 'success',
+        ]);
 
         // Redirect to the verification notice page
         return redirect()->route('verification.notice');

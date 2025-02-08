@@ -16,7 +16,7 @@
     @vite('resources/js/app.js')
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!--Main Navigation-->
     <header>
         <!-- Sidebar -->
@@ -29,7 +29,7 @@
                     </a>
 
                     <a href="{{ route('admin.post.create') }}"
-                        class="list-group-item list-group-item-action py-2 ripple active">
+                        class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-edit fa-fw me-3"></i><span>Create Post</span>
                     </a>
                     <a href="{{ route('admin.user.create') }}"
@@ -40,17 +40,22 @@
                         class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-cogs me-3"></i><span>Manage Posts</span>
                     </a>
-                    <a href="{{ route('admin.user.index') }}"
+                    <a href="{{ route('admin.show.users') }}"
                         class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-users-cog me-3"></i><span>Manage Users</span>
                     </a>
-                    <a href="{{ route('admin.user.index') }}"
+                    <a href="{{ route('admin.show.teachers') }}"
                         class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chalkboard-teacher me-3"></i><span>Manage Teachers</span>
                     </a>
-                    <a href="{{ route('admin.user.index') }}"
+                    <a href="{{ route('admin.show.admins') }}"
                         class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-shield-alt me-3"></i><span>Manage Admins</span>
+                    </a>
+
+                    {{-- return to home page --}}
+                    <a href="{{ route('home') }}" class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fas fa-home me-3"></i><span>Main Page</span>
                     </a>
 
                     <!-- Rest of the menu items -->
@@ -81,7 +86,7 @@
                         <a class="nav-link me-3 me-lg-0 dropdown-toggle hidden-arrow" href="#"
                             id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bell"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                            <span class="badge rounded-pill badge-notification bg-danger"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="#">Some news</a></li>
@@ -98,9 +103,15 @@
                                 height="22" alt="Avatar" loading="lazy" />
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">My profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li>
+                                <p class="dropdown-item text-center text-success">{{ Auth::user()->name }}</p>
+                            </li>
+                            <li><a class="dropdown-item" href=""
+                                    style="pointer-events: none; cursor: default; color: #6c757d;">My profile</a></li>
+                            <li><a class="dropdown-item" href=""
+                                    style="pointer-events: none; cursor: default; color: #6c757d;">Settings</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -111,13 +122,41 @@
     <!--Main Navigation-->
 
     <!--Main layout-->
-    <main style="margin-top: 58px;">
+    <main style="margin-top: 58px; margin-bottom: 4rem;" class="flex-grow-1">
         <div class="container pt-4">
             <!-- Your content here -->
             @yield('content')
         </div>
     </main>
     <!--Main layout-->
+
+    <!-- Add this just before the closing </body> tag -->
+    <footer class="bg-dark text-white mt-auto py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>About Us</h5>
+                    <p class="text-muted">Admin Portal for Content Management</p>
+                    <p class="text-muted small">&copy; 2023 Your Company Name. All rights reserved.</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> admin@example.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>

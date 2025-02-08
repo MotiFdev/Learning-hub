@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 
 @section('content')
+    @if (session('success'))
+        <div class="container">
+            <x-alert :message="session('success')" :type="'success'" />
+        </div>
+    @endif
     <div class="container-fluid">
         <!-- Dashboard Header -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -106,9 +111,9 @@
                 <div class="card border-0 shadow">
                     <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Manage Users</h6>
-                        <button class="btn btn-primary btn-sm">
+                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus me-2"></i>Add New User
-                        </button>
+                        </a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -129,14 +134,20 @@
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->role }}</td>
                                             {{-- <td><span class="badge bg-success">Active</span></td> --}}
-                                            <td>
-                                                <button class="btn btn-sm btn-info me-2">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
+                                            <form action="{{ route('admin.user.destroy', $user->id) }}" method="POST">
+                                                <td>
+                                                    <a href="{{ route('admin.user.edit', $user->id) }}"
+                                                        class="btn btn-sm btn-info me-2">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </form>
                                         </tr>
                                     @endforeach
                                     <!-- Add more rows as needed -->
@@ -158,27 +169,24 @@
                     </div>
                     <div class="card-body">
                         <div class="timeline">
-                            <div class="timeline-item mb-3 d-flex">
-                                <div class="timeline-icon me-3 bg-primary bg-opacity-10 p-2 rounded">
-                                    <i class="fas fa-user-plus text-primary"></i>
+                            @foreach ($recent_activities as $recent_activity)
+                                <div class="timeline-item mb-3 d-flex">
+                                    <div class="timeline-icon me-3 bg-primary bg-opacity-10 p-2 rounded">
+                                        <i
+                                            class="{{ $recent_activity->icon_type }} text-{{ $recent_activity->color_type }}"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1"><strong> {{ $recent_activity->activity_type }} </strong></p>
+                                        <p class="text-muted small mb-0">{{ $recent_activity->details }}</p>
+                                        <span
+                                            class="text-muted smaller">{{ $recent_activity->created_at->diffForHumans() }}</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="mb-1"><strong>New Teacher Added</strong></p>
-                                    <p class="text-muted small mb-0">Sarah Johnson was added as a new teacher</p>
-                                    <span class="text-muted smaller">2 hours ago</span>
-                                </div>
-                            </div>
-                            <div class="timeline-item mb-3 d-flex">
-                                <div class="timeline-icon me-3 bg-success bg-opacity-10 p-2 rounded">
-                                    <i class="fas fa-file-alt text-success"></i>
-                                </div>
-                                <div>
-                                    <p class="mb-1"><strong>Post Updated</strong></p>
-                                    <p class="text-muted small mb-0">Website policies were updated</p>
-                                    <span class="text-muted smaller">5 hours ago</span>
-                                </div>
-                            </div>
-                            <!-- Add more timeline items as needed -->
+                            @endforeach
+
+                        </div>
+                        <div class="timeline-item mb-3 d-flex">
+                            {{ $recent_activities->links() }}
                         </div>
                     </div>
                 </div>

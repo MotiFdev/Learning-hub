@@ -27,34 +27,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Example Post Row 1 -->
-                                <tr>
-                                    <td>John Doe</td>
-                                    <td>Post Title 1</td>
-                                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info me-2" title="Edit Post">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" title="Delete Post">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
                                 <!-- Example Post Row 2 -->
-                                <tr>
-                                    <td>Jane Smith</td>
-                                    <td>Post Title 2</td>
-                                    <td>Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info me-2" title="Edit Post">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" title="Delete Post">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                @foreach ($posts as $post)
+                                    <form action="{{ route('admin.post.destroy', $post->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <tr>
+                                            <td>{{ $post->user->name }}</td>
+                                            <td>{{ $post->title }}</td>
+                                            <td>{{ Str::limit($post->content, 20) }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.post.edit', $post->id) }}"
+                                                    class="btn btn-sm btn-info me-2" title="Edit Post">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-danger" title="Delete Post"
+                                                    onclick="return confirm('Are you sure?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                @endforeach
                                 <!-- More rows can be added in the same format -->
                             </tbody>
                         </table>

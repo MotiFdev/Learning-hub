@@ -55,7 +55,12 @@
                                 <a href="{{ route('post.show', $post->id) }}" class="btn btn-outline-primary">Read More</a>
                                 <a href="{{ route('teacher.post.edit', $post->id) }}"
                                     class="btn btn-outline-success">Edit</a>
-                                <a href="{{ '' }}" class="btn btn-outline-danger">Delete</a>
+                                <form action="{{ route('teacher.post.destroy', $post->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-outline-danger"
+                                        onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
                             </div>
                         </div>
                     </div>

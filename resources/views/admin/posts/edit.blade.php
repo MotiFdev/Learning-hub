@@ -4,7 +4,7 @@
     <!-- Page Header -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit Post</h1>
-        <a href="#" class="btn btn-secondary">
+        <a href="{{ route('admin.post.index') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-2"></i>Back to Posts
         </a>
     </div>
@@ -19,21 +19,34 @@
                 </div>
                 <div class="card-body">
                     <!-- Post Edit Form -->
-                    <form action="#" method="POST">
-                        <!-- CSRF token placeholder -->
-                        <input type="hidden" name="_token" value="CSRF_TOKEN">
+                    <form action="{{ route('admin.post.update', $post->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        {{-- Post Author Name --}}
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Author</label>
+                            <input type="text" class="form-control" id="author" name="author"
+                                value="{{ $post->user->name }}" readonly>
+                        </div>
 
                         <!-- Post Title Field -->
                         <div class="mb-3">
                             <label for="title" class="form-label">Post Title</label>
-                            <input type="text" class="form-control" id="title" name="title" value=""
-                                placeholder="Enter post title" required>
+                            <input type="text" class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}"
+                                id="title" name="title" value="{{ $post->title }}" placeholder="Enter post title">
+                            @error('title')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Post Content Field -->
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control" id="content" name="content" rows="5" placeholder="Enter post content" required></textarea>
+                            <textarea class="form-control {{ $errors->has('content') ? 'is-invalid' : '' }}" id="content" name="content"
+                                rows="5" placeholder="Enter post content">{{ $post->content }}</textarea>
+                            @error('content')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Form Actions -->
@@ -41,9 +54,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>Save Changes
                             </button>
-                            <button type="reset" class="btn btn-light">
-                                <i class="fas fa-refresh me-2"></i>Clear Form
-                            </button>
+
                         </div>
                     </form>
                 </div>

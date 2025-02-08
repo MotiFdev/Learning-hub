@@ -13,11 +13,18 @@ class RecentActivity extends Model
     protected $fillable = [
         'user_id',
         'activity_type',
+        'icon_type',
+        'color_type',
         'details'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

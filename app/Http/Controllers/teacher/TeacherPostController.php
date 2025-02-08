@@ -42,6 +42,13 @@ class TeacherPostController extends Controller
 
         Auth::user()->posts()->create($validation);
 
+        Auth::user()->activities()->create([
+            'activity_type' => 'New Post Created',
+            'details' => 'Teacher ' . Auth::user()->name . ' created a new post ' . $validation['title'],
+            'icon_type' => 'fas fa-file-alt',
+            'color_type' => 'success',
+        ]);
+
         return redirect()->route('teacher.post.index')->with('success', 'Post created successfully!');
     }
 
@@ -77,6 +84,13 @@ class TeacherPostController extends Controller
             'content' => 'required|string',
         ]);
 
+        Auth::user()->activities()->create([
+            'activity_type' => 'New Post Updated',
+            'details' => 'Teacher ' . Auth::user()->name . ' updated a new post ' . $validation['title'],
+            'icon_type' => 'fas fa-file-alt',
+            'color_type' => 'warning',
+        ]);
+
         $post->update($validation);
 
         return redirect()->route('teacher.post.index', $post->id)->with('success', 'Post updated successfully!');
@@ -85,8 +99,20 @@ class TeacherPostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         //
+        $post = Auth::user()->posts()->findOrFail($id);
+
+        Auth::user()->activities()->create([
+            'activity_type' => 'New Post Deleted',
+            'details' => 'Teacher ' . Auth::user()->name . ' deleted a new post ' . $post->title,
+            'icon_type' => 'fas fa-file-alt',
+            'color_type' => 'danger',
+        ]);
+
+        $post->delete();
+
+        return redirect()->route('teacher.post.index')->with('success', 'Post deleted successfully!');
     }
 }

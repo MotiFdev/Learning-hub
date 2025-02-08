@@ -5,9 +5,6 @@
         <!-- Page Header -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Create New User</h1>
-            <button class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Users
-            </button>
         </div>
 
         <div class="row justify-content-center">
@@ -18,39 +15,61 @@
                         <h6 class="m-0 font-weight-bold text-primary">User Information</h6>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form action="{{ route('admin.user.store') }}" method="POST">
+                            @csrf
+                            @method('POST')
                             <!-- Name Field -->
                             <div class="mb-3">
                                 <label class="form-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Enter full name" required>
+                                <input type="text" name="name"
+                                    class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                                    placeholder="Enter full name">
+
+                                @error('name')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Email Field -->
                             <div class="mb-3">
                                 <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control" placeholder="Enter email address" required>
+                                <input type="email" name="email"
+                                    class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                    placeholder="Enter email address">
+
+                                @error('email')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Password Field -->
                             <div class="mb-3">
                                 <label class="form-label">Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" placeholder="Enter password" required>
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleBtn">
+                                    <input type="password" name="password"
+                                        class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                        placeholder="Enter password">
+                                    <button class="btn btn-outline-secondary " type="button" id="toggleBtn">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
+                                @error('password')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Role Field -->
                             <div class="mb-4">
                                 <label class="form-label">Role</label>
-                                <select class="form-select" required>
+                                <select name="role" class="form-select {{ $errors->has('role') ? 'is-invalid' : '' }}">
                                     <option value="">Select Role</option>
                                     <option value="user">User</option>
                                     <option value="teacher">Teacher</option>
                                     <option value="admin">Admin</option>
                                 </select>
+                                @error('role')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Form Actions -->

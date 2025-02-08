@@ -5,9 +5,6 @@
         <!-- Page Header -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Edit User</h1>
-            <button class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Users
-            </button>
         </div>
 
         <div class="row justify-content-center">
@@ -18,20 +15,20 @@
                         <h6 class="m-0 font-weight-bold text-primary">User Information</h6>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form action="{{ route('admin.user.update', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
                             <div class="row g-3">
                                 <!-- Personal Information -->
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="form-label">First Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter first name">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter last name">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" name="name"
+                                            class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                                            placeholder="Enter first name" value="{{ $user->name }}">
+                                        @error('name')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -39,22 +36,34 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" placeholder="Enter email">
+                                        <input type="email" name="email"
+                                            class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                            placeholder="Enter email" value="{{ $user->email }}">
+                                        @error('email')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
-
                                 <!-- Role and Status -->
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Role</label>
-                                        <select class="form-select">
-                                            <option value="">Select Role</option>
-                                            <option value="user">User</option>
-                                            <option value="teacher">Teacher</option>
-                                            <option value="admin">Admin</option>
+                                        <select name="role" class="form-select">
+                                            <!-- Display the current role or old input if available (for editing) -->
+                                            <option value="{{ old('role', $user->role) }}" selected>
+                                                {{ old('role', $user->role) }}</option>
+                                            <!-- Other roles for selection -->
+                                            <option value="user">user</option>
+                                            <option value="teacher">teacher</option>
+                                            <option value="admin">admin</option>
                                         </select>
+                                        <!-- Display error messages for role validation -->
+                                        @error('role')
+                                            <div class="text-danger mt-1">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
+
 
                                 <!-- Password Section -->
                                 <div class="col-12">
@@ -68,15 +77,22 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label class="form-label">New Password</label>
-                                                        <input type="password" class="form-control"
-                                                            placeholder="Enter new password">
+                                                        <input type="password" name="password"
+                                                            class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                                            placeholder="Enter new password ">
+                                                        @error('password')
+                                                            <p class="text-danger">{{ $message }}</p>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label class="form-label">Confirm New Password</label>
-                                                        <input type="password" class="form-control"
-                                                            placeholder="Confirm new password">
+                                                        <input type="password" name="password_confirmation"
+                                                            class="form-control" placeholder="Confirm new password">
+                                                        @error('password_confirmation')
+                                                            <p class="text-danger">{{ $message }}</p>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>

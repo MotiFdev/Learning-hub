@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('activity_type');
+            $table->string('icon_type')->default('fas fa-question');
+            $table->string('color_type')->default('primary');
             $table->string('details')->nullable();
             $table->timestamps();
         });

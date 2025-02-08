@@ -22,6 +22,12 @@
                 <li class="nav-item">
                     <a class="nav-link active fw-semibold" href="{{ route('profile') }}">profile</a>
                 </li>
+                @can('is-admin')
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="{{ route('admin.dashboard') }}">Admin Panel
+                        </a>
+                    </li>
+                @endcan
             </ul>
             <!-- Keep Login & Register buttons aligned properly -->
             <div class="d-flex align-items-center ms-auto flex-column flex-lg-row">

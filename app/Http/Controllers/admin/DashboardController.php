@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\RecentActivity;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class DashboardController extends Controller
     public function showTotals()
     {
         $totals = $this->getDashboardTotals();
-
+        $recent_activities =  RecentActivity::orderBy('created_at', 'desc')->paginate(5);
         $users = User::orderBy('created_at', 'desc')->paginate(5);
 
 
@@ -28,11 +29,13 @@ class DashboardController extends Controller
             'admin_totals' => $totals['admins'],
             'teacher_totals' => $totals['teachers'],
             'post_totals' => $totals['posts'],
+            'recent_activities' => $recent_activities,
             'percentageIncreaseUsers' => $percentageIncreaseUsers,
             'percentageIncreasePosts' => $percentageIncreasePosts,
             'percentageIncreaseTeachers' => $percentageIncreaseTeachers,
         ]);
     }
+
 
     public function getDashboardTotals()
     {
