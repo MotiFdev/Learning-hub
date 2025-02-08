@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PostSeeder::class,
-            CommentSeeder::class
+            CommentSeeder::class,
+            RecentActivitySeeder::class
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',
